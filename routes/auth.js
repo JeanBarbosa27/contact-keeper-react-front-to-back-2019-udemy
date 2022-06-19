@@ -35,6 +35,7 @@ router.post(
     ).isLength({ min: 6 }),
   ],
   async (req, res) => {
+    // TODO: Encapsulate this as a validator middleware
     const errors = validationResult(req.body);
 
     if (!errors.isEmpty()) {
@@ -66,6 +67,7 @@ router.post(
         });
       }
 
+      // TODO: Encapsulate it as JWT Service
       const jwtPayload = {
         user: {
           id: user.id,

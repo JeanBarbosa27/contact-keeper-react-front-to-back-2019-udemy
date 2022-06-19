@@ -22,7 +22,8 @@ router.post(
     ).isLength({ min: 6 }),
   ],
   async (req, res) => {
-    // TODO: Validator
+    // TODO: Encapsulate this as a validator middleware
+    // Validator
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -33,7 +34,8 @@ router.post(
     const { name, email, password } = req.body;
 
     try {
-      // TODO: User Repository
+      // TODO: Encapsulate this as a user repository
+      // User Repository
       let user = await User.find({ email });
 
       if (!user) {
@@ -54,6 +56,7 @@ router.post(
       await user.save();
       // User Repository/
 
+      // TODO: Encapsulate this as a JWT Handler Service
       // JWT Handler Service
       const jwtPayload = {
         user: {

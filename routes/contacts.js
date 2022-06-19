@@ -6,6 +6,8 @@ const Contact = require("../models/Contact");
 
 const router = express.Router();
 
+// TODO: Creating a contacts_controller to encapuslate each route action
+
 // @route     GET    api/contacts
 // @desc      List all user contacts
 // @access    Private
@@ -59,7 +61,7 @@ router.post(
 // @access    Private
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
-    // TODO: Encapsulate contact verifications
+    // TODO: Encapsulate contact verifications as a contact middleware
     const { id } = req.params;
     let contact = await Contact.findById(id);
 
@@ -95,7 +97,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
 // @access    Private
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
-    // TODO: Encapsulate contact verifications
+    // TODO: Encapsulate contact verifications as contact middleware
     const { id } = req.params;
     let contact = await Contact.findById(id);
 
