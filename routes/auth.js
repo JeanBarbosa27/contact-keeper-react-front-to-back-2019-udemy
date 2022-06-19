@@ -13,8 +13,13 @@ const router = express.Router();
 // @desc      List users that are logged in
 // @access    Private
 router.get("/", authMiddleware, async (req, res) => {
-  const user = await User.findById(req.headers.user.id).select("-password");
-  return res.status(200).json(user);
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ msg: `Server error: ${error.message}` });
+  }
 });
 
 // @route     POST    api/auth
@@ -79,9 +84,7 @@ router.post(
       jwt.sign(jwtPayload, config.get("jwtSecret"), jswtOptions, jwtCallback);
     } catch (error) {
       console.error(error);
-      return res
-        .status(500)
-        .json({ errors: [{ param: "catch", msg: "Server error" }] });
+      return res.status(500).json({ msg: "Server error" });
     }
   }
 );

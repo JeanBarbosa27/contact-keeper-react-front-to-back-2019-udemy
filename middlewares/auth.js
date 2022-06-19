@@ -10,7 +10,7 @@ module.exports = function (req, res, next) {
 
   try {
     const decoded = jwt.verify(token, config.get("jwtSecret"));
-    req.headers.user = decoded.user;
+    req.user = decoded.user;
     next();
   } catch (error) {
     console.error("Error:", error.message);
