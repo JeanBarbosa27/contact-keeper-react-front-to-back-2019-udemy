@@ -22,7 +22,7 @@ router.post(
     ).isLength({ min: 6 }),
   ],
   async (req, res) => {
-    // Validator
+    // TODO: Validator
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -33,7 +33,7 @@ router.post(
     const { name, email, password } = req.body;
 
     try {
-      // User Repository
+      // TODO: User Repository
       let user = await User.find({ email });
 
       if (!user) {
@@ -63,7 +63,7 @@ router.post(
       const jwtOptions = { expiresIn: 360000 };
       const jwtCallback = (error, token) => {
         if (error) throw error;
-        res.json({ token });
+        res.status(201).json({ token });
       };
 
       jwt.sign(jwtPayload, config.get("jwtSecret"), jwtOptions, jwtCallback);
