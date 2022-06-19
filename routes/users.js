@@ -70,9 +70,7 @@ router.post(
       // JWT Handler Service/
     } catch (error) {
       console.error(error.message);
-      return res
-        .status(500)
-        .json({ errors: [{ param: "catch", msg: "Server error" }] });
+      return res.status(500).json({ msg: "Server error" });
     }
   }
 );
