@@ -59,6 +59,7 @@ router.post(
 // @access    Private
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
+    // TODO: Encapsulate contact verifications
     const { id } = req.params;
     let contact = await Contact.findById(id);
 
@@ -92,9 +93,31 @@ router.put("/:id", authMiddleware, async (req, res) => {
 // @route     DELETE    api/contacts
 // @desc      Log in user
 // @access    Private
-router.delete("/:id", (req, res) => {
-  const { id } = req.params;
-  res.send(`Remove contact with id ${id}`);
+router.delete("/:id", authMiddleware, async (req, res) => {
+  try {
+    // TODO: Encapsulate contact verifications
+    const { id } = req.params;
+    let contact = await Contact.findById(id);
+
+    if (!contact) {
+      return res.status(404).json({
+        msg: `There isn't a contact with id of ${id}!`,
+      });
+    }
+
+    if (contact.user.toString() !== req.user.id) {
+      return res.status(403).json({
+        msg: "It's forbiden delete a contact that isn't yours!",
+      });
+    }
+
+    contact = await Contact.findByIdAndRemove(id);
+
+    return res.status(204).send();
+  } catch (error) {
+    console.error("Error:", error.message);
+    return res.status(500).json({ msg: `Server error: ${error.message}` });
+  }
 });
 
 module.exports = router;
