@@ -2,9 +2,9 @@
 
 This project was created to follow the Contact Keeper project built in React Front to Back 2019 Udemy course, teached by Brad Traversy.
 
-**Building document**
+## Building document
 
-# Getting Started with Create React App
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
