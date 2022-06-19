@@ -3,7 +3,6 @@ const { check, validationResult } = require("express-validator");
 
 const authMiddleware = require("../middlewares/auth");
 const Contact = require("../models/Contact");
-const User = require("../models/User");
 
 const router = express.Router();
 
@@ -58,9 +57,36 @@ router.post(
 // @route     PUT    api/contacts
 // @desc      Update a contact for a given id
 // @access    Private
-router.put("/:id", (req, res) => {
-  const { id } = req.params;
-  res.send(`Update contact with id ${id}`);
+router.put("/:id", authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    let contact = await Contact.findById(id);
+
+    if (!contact) {
+      return res.status(404).json({
+        msg: `There isn't a contact with id of ${id}!`,
+      });
+    }
+
+    if (contact.user.toString() !== req.user.id) {
+      return res.status(403).json({
+        msg: "It's forbiden update a contact that isn't yours!",
+      });
+    }
+
+    contact = await Contact.findByIdAndUpdate(
+      id,
+      { $set: { ...req.body } },
+      { new: true }
+    );
+
+    return res
+      .status(202)
+      .json({ msg: "Contact successfully updated", contact });
+  } catch (error) {
+    console.error("Error:", error.message);
+    return res.status(500).json({ msg: `Server error: ${error.message}` });
+  }
 });
 
 // @route     DELETE    api/contacts
