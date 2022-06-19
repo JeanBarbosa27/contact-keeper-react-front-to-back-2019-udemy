@@ -5,13 +5,16 @@ const bcrypt = require("bcrypt");
 const config = require("config");
 const jwt = require("jsonwebtoken");
 
+const authMiddleware = require("../middlewares/auth");
+
 const router = express.Router();
 
 // @route     GET    api/auth
 // @desc      List users that are logged in
 // @access    Private
-router.get("/", (req, res) => {
-  res.send("Get logged users");
+router.get("/", authMiddleware, async (req, res) => {
+  const user = await User.findById(req.headers.user.id).select("-password");
+  return res.status(200).json(user);
 });
 
 // @route     POST    api/auth
