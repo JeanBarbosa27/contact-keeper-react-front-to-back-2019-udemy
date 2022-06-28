@@ -1,11 +1,23 @@
+import { useContext } from "react";
 import PropTypes from "prop-types";
 
 import { capitalize } from "../../utils/strings";
 
+import contactContext from "../../context/contact/contactContext";
+
 const ContactItem = ({ contact: { id, name, email, phone, type } }) => {
+  const { deleteContact } = useContext(contactContext);
   const badgeClassesFactory = {
     professional: "badge-success",
     personal: "badge-primary",
+  };
+
+  const onEdit = (id) => {
+    console.log("id to edit:", id);
+  };
+
+  const onDelete = (id) => {
+    deleteContact(id);
   };
 
   return (
@@ -29,8 +41,16 @@ const ContactItem = ({ contact: { id, name, email, phone, type } }) => {
       </ul>
 
       <div className="buttons-wrapper">
-        <button className="btn btn-dark btn-sm">Edit {id}</button>
-        <button className="btn btn-danger btn-sm">Delete {id}</button>
+        <button
+          type="button"
+          onClick={() => onEdit(id)}
+          className="btn btn-dark btn-sm"
+        >
+          Edit
+        </button>
+        <button onClick={() => onDelete(id)} className="btn btn-danger btn-sm">
+          Delete
+        </button>
       </div>
     </div>
   );
