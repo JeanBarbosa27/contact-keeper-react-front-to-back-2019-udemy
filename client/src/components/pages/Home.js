@@ -1,12 +1,11 @@
+import ContactForm from "../contacts/ContactForm";
 import ContactsList from "../contacts/ContactsList";
 
 const Home = () => {
   return (
     <div className="grid-2">
-      <div>Contact Form</div>
-      <div>
-        <ContactsList />
-      </div>
+      <ContactForm />
+      <ContactsList />
     </div>
   );
 };
