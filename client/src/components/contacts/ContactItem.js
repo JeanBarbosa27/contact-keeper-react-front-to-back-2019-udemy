@@ -12,11 +12,11 @@ const ContactItem = ({ contact: { id, name, email, phone, type } }) => {
     personal: "badge-primary",
   };
 
-  const onEdit = (id) => {
+  const onEdit = () => {
     console.log("id to edit:", id);
   };
 
-  const onDelete = (id) => {
+  const onDelete = () => {
     deleteContact(id);
   };
 
@@ -41,14 +41,10 @@ const ContactItem = ({ contact: { id, name, email, phone, type } }) => {
       </ul>
 
       <div className="buttons-wrapper">
-        <button
-          type="button"
-          onClick={() => onEdit(id)}
-          className="btn btn-dark btn-sm"
-        >
+        <button type="button" onClick={onEdit} className="btn btn-dark btn-sm">
           Edit
         </button>
-        <button onClick={() => onDelete(id)} className="btn btn-danger btn-sm">
+        <button onClick={onDelete} className="btn btn-danger btn-sm">
           Delete
         </button>
       </div>
