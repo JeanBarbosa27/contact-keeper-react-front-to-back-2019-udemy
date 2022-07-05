@@ -1,9 +1,10 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import contactContext from "../../context/contact/contactContext";
 
 const ContactForm = () => {
-  const { addContact } = useContext(contactContext);
+  const { addContact, current, clearCurrent, updateContact } =
+    useContext(contactContext);
   const initialState = {
     name: "",
     email: "",
@@ -11,6 +12,7 @@ const ContactForm = () => {
     type: "personal",
   };
   const [contact, setContact] = useState(initialState);
+  const isEditing = current !== null;
   const { name, email, phone, type } = contact;
 
   const onChange = ({ target }) =>
@@ -21,13 +23,27 @@ const ContactForm = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
+    if (isEditing) {
+      return updateContact(contact);
+    }
+
     addContact(contact);
     setContact(initialState);
   };
 
+  useEffect(() => {
+    if (isEditing) {
+      return setContact(current);
+    }
+
+    setContact(initialState);
+  }, [contactContext, current]);
+
   return (
     <form onSubmit={onSubmit}>
-      <h2 className="text-primary">Add Contact</h2>
+      <h2 className="text-primary">
+        {isEditing ? `Editing ${name}` : "Add a new contact"}
+      </h2>
       <input
         type="text"
         name="name"
@@ -76,6 +92,15 @@ const ContactForm = () => {
           value="Save"
           className="btn btn-primary btn-block"
         />
+        {isEditing && (
+          <button
+            type="button"
+            onClick={clearCurrent}
+            className="btn btn-secondary btn-block"
+          >
+            Cancel
+          </button>
+        )}
       </div>
     </form>
   );

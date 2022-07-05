@@ -5,18 +5,20 @@ import { capitalize } from "../../utils/strings";
 
 import contactContext from "../../context/contact/contactContext";
 
-const ContactItem = ({ contact: { id, name, email, phone, type } }) => {
-  const { deleteContact } = useContext(contactContext);
+const ContactItem = ({ contact }) => {
+  const { deleteContact, setCurrent, current, clearCurrent } =
+    useContext(contactContext);
   const badgeClassesFactory = {
     professional: "badge-success",
     personal: "badge-primary",
   };
-
-  const onEdit = () => {
-    console.log("id to edit:", id);
-  };
+  const { id, name, email, phone, type } = contact;
 
   const onDelete = () => {
+    if (current && current.id === id) {
+      clearCurrent();
+    }
+
     deleteContact(id);
   };
 
@@ -41,7 +43,11 @@ const ContactItem = ({ contact: { id, name, email, phone, type } }) => {
       </ul>
 
       <div className="buttons-wrapper">
-        <button type="button" onClick={onEdit} className="btn btn-dark btn-sm">
+        <button
+          type="button"
+          onClick={() => setCurrent(contact)}
+          className="btn btn-dark btn-sm"
+        >
           Edit
         </button>
         <button onClick={onDelete} className="btn btn-danger btn-sm">
