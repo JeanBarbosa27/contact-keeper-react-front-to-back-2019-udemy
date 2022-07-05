@@ -400,6 +400,17 @@ table th {
   transition: opacity 1000ms ease-in;
 }
 
+.flex-wrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-wrapper--between {
+  justify-content: space-between;
+}
+
 .buttons-wrapper {
   margin-top: 1rem;
 }
