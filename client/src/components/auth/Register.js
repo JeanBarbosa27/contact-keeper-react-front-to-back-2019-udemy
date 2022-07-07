@@ -1,9 +1,13 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import alertContext from "../../context/alert/alertContext";
+import authContext from "../../context/auth/authContext";
 
 const Register = () => {
   const { setAlert } = useContext(alertContext);
+  const { registerUser, errors, clearErrors } = useContext(authContext);
+
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -33,8 +37,19 @@ const Register = () => {
       );
     }
 
-    console.log("Registering:", user);
+    registerUser({
+      name,
+      email,
+      password,
+    });
   };
+
+  useEffect(() => {
+    if (errors && errors.length) {
+      errors.forEach((error) => setAlert(error.msg, "danger", 10000));
+      clearErrors();
+    }
+  }, [errors, clearErrors, setAlert]);
 
   return (
     <div className="form-container">
@@ -89,6 +104,9 @@ const Register = () => {
           value="Register"
           className="btn btn-primary btn-block"
         />
+        <p>
+          <Link to="/login">I have an account</Link>
+        </p>
       </form>
     </div>
   );
