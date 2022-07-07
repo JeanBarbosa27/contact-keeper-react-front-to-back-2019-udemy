@@ -16,6 +16,12 @@ import Login from "./components/auth/Login";
 import Navbar from "./components/layouts/Navbar";
 import Register from "./components/auth/Register";
 
+//utils
+import setAuthToken from "./utils/setAuthToken";
+
+const authToken = sessionStorage["contact-keeper-token"];
+authToken && setAuthToken(authToken);
+
 function App() {
   return (
     <AuthState>
