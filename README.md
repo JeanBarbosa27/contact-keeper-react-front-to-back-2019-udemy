@@ -39,6 +39,7 @@ Here are the features planned for this project, some of them was done just follo
 
 - [ ] User registration
 - [ ] User authentication
+- [x] Alerts component
 - [ ] Private routes
 - [x] Full CRUD of a contact
 - [x] Filter contacts
@@ -56,6 +57,7 @@ Here are the features planned for this project, some of them was done just follo
 
 #### Front-End
 
+- [ ] Alert with transitions
 - [ ] Pagination when contacts list is too big
 - [ ] Adapt to TypeScript
 - [ ] Implement StoryBook
