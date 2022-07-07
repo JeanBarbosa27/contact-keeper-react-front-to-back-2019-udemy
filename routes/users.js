@@ -8,7 +8,7 @@ const User = require("../models/User");
 
 const router = express.Router();
 
-// @route     POSt    api/auth
+// @route     POST    api/users
 // @desc      Register user
 // @access    Public
 router.post(
