@@ -39,6 +39,7 @@ Here are the features planned for this project, some of them was done just follo
 
 - [ ] User registration
 - [ ] User authentication
+- [ ] Private routes
 - [x] Full CRUD of a contact
 - [x] Filter contacts
 - [x] State management with React Context API
