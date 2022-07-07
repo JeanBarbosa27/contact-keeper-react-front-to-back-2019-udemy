@@ -35,7 +35,6 @@ const AuthState = (props) => {
       const { data } = await axios.get("/api/auth");
       dispatch({ type: USER_LOADED, payload: data });
     } catch (error) {
-      console.log("auth error:", error.response.data);
       dispatch({ type: AUTH_ERROR, payload: error.response.data });
     }
   };
@@ -55,9 +54,22 @@ const AuthState = (props) => {
     }
   };
 
-  // Login user
+  const loginUser = async (formData) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
-  // Logout
+    try {
+      const { data } = await axios.post("api/auth", formData, config);
+      dispatch({ type: LOGIN_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: LOGIN_FAIL, payload: error.response.data });
+    }
+  };
+
+  const logoutUser = () => dispatch({ type: LOGOUT });
 
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
 
@@ -65,13 +77,15 @@ const AuthState = (props) => {
     <AuthContext.Provider
       value={{
         errors: state.errors,
-        isAuthenticated: state.isAuthenticated,
+        isAuthenticated: state.isAuthenticated || state.token !== null,
         loading: state.loading,
         token: state.token,
         user: state.user,
         registerUser,
         clearErrors,
         loadUser,
+        loginUser,
+        logoutUser,
       }}
     >
       {props.children}

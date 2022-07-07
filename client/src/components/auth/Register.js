@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import alertContext from "../../context/alert/alertContext";
 import authContext from "../../context/auth/authContext";
 
+import { validateRequiredFields } from "../../utils/forms";
+
 const Register = () => {
   const { setAlert } = useContext(alertContext);
   const { registerUser, errors, clearErrors, isAuthenticated } =
@@ -17,18 +19,13 @@ const Register = () => {
     password2: "",
   });
   const { name, email, password, password2 } = user;
-  const requiredFields = [name, email, password];
-
-  const validateRequiredFields = !!requiredFields.filter(
-    (field) => field.trim() !== ""
-  ).length;
 
   const onChange = ({ target }) =>
     setUser({ ...user, [target.name]: target.value });
 
   const onSubmit = (event) => {
     event.preventDefault();
-    if (!validateRequiredFields) {
+    if (!validateRequiredFields([name, email, password])) {
       return setAlert("All fields must be fulfilled", "danger");
     }
 

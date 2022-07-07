@@ -1,7 +1,17 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import alertContext from "../../context/alert/alertContext";
+import authContext from "../../context/auth/authContext";
+
+import { validateRequiredFields } from "../../utils/forms";
 
 const Login = () => {
+  const { setAlert } = useContext(alertContext);
+  const { errors, clearErrors, isAuthenticated, loginUser } =
+    useContext(authContext);
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -14,8 +24,29 @@ const Login = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log("Login:", user);
+
+    if (!validateRequiredFields([email, password])) {
+      return setAlert("All fields must be fulfilled", "danger");
+    }
+
+    loginUser({ email, password });
   };
+
+  useEffect(() => {
+    if (errors && errors.length) {
+      errors.forEach((error) => {
+        setAlert(error.msg, "danger");
+      });
+
+      clearErrors();
+    }
+
+    if (isAuthenticated) {
+      navigate("/", { replace: true });
+    }
+
+    //eslint-disable-next-line
+  }, [errors, isAuthenticated]);
 
   return (
     <div className="form-container">
@@ -25,7 +56,13 @@ const Login = () => {
       <form onSubmit={onSubmit}>
         <div className="form-group">
           <label htmlFor="email">Email address</label>
-          <input type="email" name="email" value={email} onChange={onChange} />
+          <input
+            type="email"
+            name="email"
+            value={email}
+            required
+            onChange={onChange}
+          />
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
@@ -33,6 +70,8 @@ const Login = () => {
             type="password"
             name="password"
             value={password}
+            minLength="6"
+            required
             onChange={onChange}
           />
         </div>

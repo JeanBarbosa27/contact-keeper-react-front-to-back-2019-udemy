@@ -20,6 +20,7 @@ const authReducer = (state, action) => {
         loading: false,
       };
     case REGISTER_SUCCESS:
+    case LOGIN_SUCCESS:
       sessionStorage.setItem("contact-keeper-token", action.payload.token);
 
       return {
@@ -30,6 +31,7 @@ const authReducer = (state, action) => {
       };
     case REGISTER_FAIL:
     case AUTH_ERROR:
+    case LOGIN_FAIL:
       sessionStorage.removeItem("contact-keeper-token");
 
       return {
@@ -44,6 +46,16 @@ const authReducer = (state, action) => {
       return {
         ...state,
         errors: null,
+      };
+    case LOGOUT:
+      sessionStorage.removeItem("contact-keeper-token");
+
+      return {
+        errors: null,
+        isAuthenticated: null,
+        loading: true,
+        token: null,
+        user: null,
       };
     default:
       return state;
