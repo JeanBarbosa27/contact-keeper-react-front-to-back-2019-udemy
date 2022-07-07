@@ -1,12 +1,14 @@
 import { useState, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import alertContext from "../../context/alert/alertContext";
 import authContext from "../../context/auth/authContext";
 
 const Register = () => {
   const { setAlert } = useContext(alertContext);
-  const { registerUser, errors, clearErrors } = useContext(authContext);
+  const { registerUser, errors, clearErrors, isAuthenticated } =
+    useContext(authContext);
+  const navigate = useNavigate();
 
   const [user, setUser] = useState({
     name: "",
@@ -49,7 +51,13 @@ const Register = () => {
       errors.forEach((error) => setAlert(error.msg, "danger", 10000));
       clearErrors();
     }
-  }, [errors, clearErrors, setAlert]);
+
+    if (isAuthenticated) {
+      navigate("/", { replace: true });
+    }
+
+    // eslint-disable-next-line
+  }, [errors, isAuthenticated]);
 
   return (
     <div className="form-container">
