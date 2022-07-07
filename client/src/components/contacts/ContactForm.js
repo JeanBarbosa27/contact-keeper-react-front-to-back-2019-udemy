@@ -37,7 +37,9 @@ const ContactForm = () => {
     }
 
     setContact(initialState);
-  }, [contactContext, current, isEditing, initialState]);
+
+    // eslint-disable-next-line
+  }, [contactContext, current]);
 
   return (
     <form onSubmit={onSubmit}>
