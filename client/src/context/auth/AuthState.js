@@ -14,6 +14,7 @@ import {
   LOGOUT,
   CLEAR_ERRORS,
 } from "../types";
+import setAuthToken from "../../utils/setAuthToken";
 
 const AuthState = (props) => {
   const initialState = {
@@ -26,7 +27,18 @@ const AuthState = (props) => {
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Load user
+  const loadUser = async () => {
+    const authToken = sessionStorage["contact-keeper-token"];
+    authToken && setAuthToken(authToken);
+
+    try {
+      const { data } = await axios.get("/api/auth");
+      dispatch({ type: USER_LOADED, payload: data });
+    } catch (error) {
+      console.log("auth error:", error.response.data);
+      dispatch({ type: AUTH_ERROR, payload: error.response.data });
+    }
+  };
 
   const registerUser = async (formData) => {
     const config = {
@@ -59,6 +71,7 @@ const AuthState = (props) => {
         user: state.user,
         registerUser,
         clearErrors,
+        loadUser,
       }}
     >
       {props.children}

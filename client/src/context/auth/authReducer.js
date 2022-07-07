@@ -11,6 +11,14 @@ import {
 
 const authReducer = (state, action) => {
   switch (action.type) {
+    case USER_LOADED:
+      console.log("user loaded:", action.payload);
+      return {
+        ...state,
+        ...action.payload,
+        isAuthenticated: true,
+        loading: false,
+      };
     case REGISTER_SUCCESS:
       sessionStorage.setItem("contact-keeper-token", action.payload.token);
 
@@ -21,6 +29,7 @@ const authReducer = (state, action) => {
         loading: false,
       };
     case REGISTER_FAIL:
+    case AUTH_ERROR:
       sessionStorage.removeItem("contact-keeper-token");
 
       return {
