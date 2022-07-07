@@ -38,7 +38,7 @@ router.post(
       // User Repository
       let user = await User.find({ email });
 
-      if (!user) {
+      if (user && user.length) {
         return res.status(400).json({
           errors: [
             {
