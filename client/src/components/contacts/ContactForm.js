@@ -37,7 +37,7 @@ const ContactForm = () => {
     }
 
     setContact(initialState);
-  }, [contactContext, current]);
+  }, [contactContext, current, isEditing, initialState]);
 
   return (
     <form onSubmit={onSubmit}>
