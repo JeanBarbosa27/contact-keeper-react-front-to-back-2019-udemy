@@ -11,7 +11,7 @@
     "server": "nodemon server.js",
     "client": "npm run start --prefix client",
     "clientinstall": "npm install --prefix client",
-    "dev": "concurrently \"yarn server\" \"yarn client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
