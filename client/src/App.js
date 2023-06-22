@@ -15,6 +15,7 @@ import Home from "./components/pages/Home";
 import Login from "./components/auth/Login";
 import Navbar from "./components/layouts/Navbar";
 import Register from "./components/auth/Register";
+import PrivateRoute from "./components/routing/PrivateRoute";
 
 //utils
 import setAuthToken from "./utils/setAuthToken";
@@ -32,7 +33,7 @@ function App() {
             <div className="container">
               <Alerts />
               <Routes>
-                <Route exact path="/" element={<Home />} />
+                <Route exact path="/" element={<PrivateRoute element={<Home />} />} />
                 <Route exact path="/about" element={<About />} />
                 <Route exact path="/login" element={<Login />} />
                 <Route exact path="/register" element={<Register />} />

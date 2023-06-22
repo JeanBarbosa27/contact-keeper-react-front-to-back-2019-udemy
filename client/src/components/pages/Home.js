@@ -1,5 +1,4 @@
 import { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 import authContext from "../../context/auth/authContext";
 
@@ -9,16 +8,9 @@ import ContactFilter from "../contacts/ContactFilter";
 
 const Home = () => {
   const { loadUser } = useContext(authContext);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const authToken = sessionStorage["contact-keeper-token"];
-    if (authToken) {
-      loadUser();
-    } else {
-      navigate("/login", { replace: true });
-    }
-
+    loadUser();
     // eslint-disable-next-line
   }, []);
 
