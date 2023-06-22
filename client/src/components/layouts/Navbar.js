@@ -10,7 +10,9 @@ const Navbar = ({ icon, title }) => {
   return (
     <div className="navbar bg-primary">
       <h1>
-        <i className={icon} /> {title}
+        <Link to="/">
+          <i className={icon} /> {title}
+        </Link>
       </h1>
       <ul>
         {isAuthenticated ? (
@@ -38,6 +40,9 @@ const Navbar = ({ icon, title }) => {
             </li>
             <li>
               <Link to="/login">Login account</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
             </li>
           </Fragment>
         )}
