@@ -12,7 +12,6 @@ import {
 const authReducer = (state, action) => {
   switch (action.type) {
     case USER_LOADED:
-      console.log("user loaded:", action.payload);
       return {
         ...state,
         ...action.payload,
