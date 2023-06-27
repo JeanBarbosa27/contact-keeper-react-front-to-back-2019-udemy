@@ -39,8 +39,8 @@ const contactReducer = (state, action) => {
       return {
         ...state,
         contacts: state.contacts.map((contact) => {
-          if (contact.id === action.payload.id) {
-            return action.payload;
+          if (contact._id === action.payload.contact._id) {
+            return action.payload.contact;
           }
 
           return contact;

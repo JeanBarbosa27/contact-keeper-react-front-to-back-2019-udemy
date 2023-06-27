@@ -25,6 +25,7 @@ const ContactState = (props) => {
   };
 
   const [state, dispatch] = useReducer(contactReducer, initialState);
+  const apiURL = 'api/contacts';
 
   const dispatchError = (error) => {
      //TODO: add a logger
@@ -32,8 +33,8 @@ const ContactState = (props) => {
   }
   const getContacts = async () => {
     try {
-      const response = await axios.get('api/contacts')
-      dispatch({ type: GET_CONTACTS, payload: response.data });
+      const { data } = await axios.get(apiURL)
+      dispatch({ type: GET_CONTACTS, payload: data });
     } catch (error) {
       dispatchError(error);
     }
@@ -43,34 +44,36 @@ const ContactState = (props) => {
     const config = { headers: { 'Content-Type': 'application/json' } }
 
     try {
-      const response = await axios.post('api/contacts', contact, config)
-      dispatch({ type: ADD_CONTACT, payload: response.data });
+      const { data } = await axios.post(apiURL, contact, config)
+      dispatch({ type: ADD_CONTACT, payload: data });
     } catch (error) {
       dispatchError(error);
     }
   };
 
-  const filterContacts = (text) =>
-    dispatch({ type: FILTER_CONTACTS, payload: text });
-
-  const clearFilter = () => dispatch({ type: CLEAR_FILTER });
-
-  const updateContact = (contact) => {
-    dispatch({
-      type: UPDATE_CONTACT,
-      payload: contact,
-    });
+  const updateContact = async (contact) => {
+    try {
+      const config = { headers: { 'Content-Type': 'application/json' } };
+      const { data } = await axios.put(`${apiURL}/${contact._id}`, contact, config);
+      dispatch({ type: UPDATE_CONTACT, payload: data });
+    } catch (error) {
+      dispatchError(error);
+    }
   };
 
   const deleteContact = async (id) => {
     try {
       await axios.delete(`/api/contacts/${id}`);
       dispatch({ type: DELETE_CONTACT, payload: id });
-
     } catch (error) {
       dispatchError(error);
     }
   }
+
+  const filterContacts = (text) =>
+    dispatch({ type: FILTER_CONTACTS, payload: text });
+
+  const clearFilter = () => dispatch({ type: CLEAR_FILTER });
 
   const clearContacts = () => dispatch({ type: CLEAR_CONTACTS });
 
