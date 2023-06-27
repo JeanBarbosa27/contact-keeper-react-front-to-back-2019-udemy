@@ -26,13 +26,16 @@ const ContactState = (props) => {
 
   const [state, dispatch] = useReducer(contactReducer, initialState);
 
+  const dispatchError = (error) => {
+     //TODO: add a logger
+     dispatch({ type: CONTACT_ERROR, payload: error.response.msg });
+  }
   const getContacts = async () => {
     try {
       const response = await axios.get('api/contacts')
       dispatch({ type: GET_CONTACTS, payload: response.data });
     } catch (error) {
-      //TODO: add a logger
-      dispatch({ type: CONTACT_ERROR, payload: error.response.msg });
+      dispatchError(error);
     }
   }
 
@@ -43,8 +46,7 @@ const ContactState = (props) => {
       const response = await axios.post('api/contacts', contact, config)
       dispatch({ type: ADD_CONTACT, payload: response.data });
     } catch (error) {
-      //TODO: add a logger
-      dispatch({ type: CONTACT_ERROR, payload: error.response.msg });
+      dispatchError(error);
     }
   };
 
@@ -60,7 +62,15 @@ const ContactState = (props) => {
     });
   };
 
-  const deleteContact = (id) => dispatch({ type: DELETE_CONTACT, payload: id });
+  const deleteContact = async (id) => {
+    try {
+      await axios.delete(`/api/contacts/${id}`);
+      dispatch({ type: DELETE_CONTACT, payload: id });
+
+    } catch (error) {
+      dispatchError(error);
+    }
+  }
 
   const clearContacts = () => dispatch({ type: CLEAR_CONTACTS });
 
