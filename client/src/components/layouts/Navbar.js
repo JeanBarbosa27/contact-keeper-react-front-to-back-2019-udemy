@@ -1,11 +1,20 @@
 import React, { useContext, Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import authContext from "../../context/auth/authContext";
+import contactContext from "../../context/contact/contactContext";
 
 const Navbar = ({ icon, title }) => {
-  const { isAuthenticated, logoutUser } = useContext(authContext);
+  const { isAuthenticated, logoutUser, user } = useContext(authContext);
+  const { clearContacts } = useContext(contactContext);
+  const navigate = useNavigate();
+
+  const onLogout = () => {
+    logoutUser();
+    clearContacts();
+    navigate("/login", { replace: true });
+  }
 
   return (
     <div className="navbar bg-primary">
@@ -17,6 +26,7 @@ const Navbar = ({ icon, title }) => {
       <ul>
         {isAuthenticated ? (
           <Fragment>
+            {user !== null && (<li>Welcome, {user.name}</li>)}
             <li>
               <Link to="/">Home</Link>
             </li>
@@ -27,7 +37,7 @@ const Navbar = ({ icon, title }) => {
               <button
                 type="button"
                 className="btn btn-primary btn-sm"
-                onClick={logoutUser}
+                onClick={onLogout}
               >
                 <i className="fas fa-power-off text-danger" />
               </button>

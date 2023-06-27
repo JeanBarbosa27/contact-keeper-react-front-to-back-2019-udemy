@@ -1,8 +1,10 @@
 import {
+  GET_CONTACTS,
   ADD_CONTACT,
   FILTER_CONTACTS,
   UPDATE_CONTACT,
   DELETE_CONTACT,
+  CLEAR_CONTACTS,
   CLEAR_FILTER,
   SET_CURRENT,
   CLEAR_CURRENT,
@@ -11,10 +13,17 @@ import {
 
 const contactReducer = (state, action) => {
   switch (action.type) {
+    case GET_CONTACTS:
+      return {
+        ...state,
+        contacts: action.payload,
+        loading: false,
+      }
     case ADD_CONTACT:
       return {
         ...state,
         contacts: [...state.contacts, action.payload],
+        loading: false,
       };
     case SET_CURRENT:
       return {
@@ -37,6 +46,7 @@ const contactReducer = (state, action) => {
           return contact;
         }),
         current: null,
+        loading: false,
       };
     case DELETE_CONTACT:
       return {
@@ -44,6 +54,16 @@ const contactReducer = (state, action) => {
         contacts: state.contacts.filter(
           (contact) => contact.id !== action.payload
         ),
+        loading: false,
+      };
+    case CLEAR_CONTACTS:
+      console.log('clear contacts is called')
+      return {
+        ...state,
+        contacts: null,
+        current: null,
+        error: null,
+        filtered: null,
       };
     case FILTER_CONTACTS:
       return {

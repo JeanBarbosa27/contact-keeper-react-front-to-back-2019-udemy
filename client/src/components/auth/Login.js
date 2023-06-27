@@ -8,8 +8,8 @@ import { validateRequiredFields } from "../../utils/forms";
 
 const Login = () => {
   const { setAlert } = useContext(alertContext);
-  const { errors, clearErrors, isAuthenticated, loginUser } =
-    useContext(authContext);
+  const { errors, clearErrors, isAuthenticated, loginUser } = useContext(authContext);
+
   const navigate = useNavigate();
 
   const [user, setUser] = useState({
@@ -33,7 +33,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (errors && errors.length) {
+    if (errors !== null && errors.length) {
       errors.forEach((error) => {
         setAlert(error.msg, "danger");
       });
